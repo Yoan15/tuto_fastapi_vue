@@ -11,6 +11,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+register_tortoise(app, config=TORTOISE_ORM, generate_schemas=False)
+
 @app.get("/")
 def home():
     return "Hello, World!"
