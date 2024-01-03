@@ -8,6 +8,8 @@ Tortoise.init_models(["src.database.models"], "models")
 
 app = FastAPI()
 
+from src.routes import users, notes
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:8080"],
@@ -15,6 +17,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(users.router)
+app.include_router(notes.router)
 
 register_tortoise(app, config=TORTOISE_ORM, generate_schemas=False)
 
