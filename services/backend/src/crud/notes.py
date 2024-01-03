@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from tortoise.exceptions import DoesNotExist
 from src.database.models import Notes
 from src.schemas.notes import NoteOutSchema
+from src.schemas.token import Status
 
 
 async def get_notes():
@@ -32,7 +33,7 @@ async def update_note(note_id, note, current_user) -> NoteOutSchema:
     raise HTTPException(status_code=403, detail=f"Vous n'êtes pas autorisé à mettre à jour cette note")
 
 
-async def delete_note(note_id, current_user):
+async def delete_note(note_id, current_user) -> Status:
     try:
         db_note = await NoteOutSchema.from_queryset_single(Notes.get(id=note_id))
     except DoesNotExist:
@@ -42,6 +43,6 @@ async def delete_note(note_id, current_user):
         deleted_count = await Notes.filter(id=note_id).delete()
         if not deleted_count:
             raise HTTPException(status_code=404, detail=f"Note {note_id} non trouvée")
-        return f"Note {note_id} supprimée"
+        return Status(message=f"Note {note_id} supprimée")
 
     raise HTTPException(status_code=403, detail=f"Vous n'êtes pas autorisé à supprimer cette note")
