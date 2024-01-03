@@ -10,7 +10,7 @@ from jose import jwt, JWTError
 from tortoise.exceptions import DoesNotExist
 from src.schemas.token import TokenData
 from src.database.models import Users
-from src.database.users import UserOutSchema
+from src.schemas.users import UserOutSchema
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 ALGORITHM = "HS256"
